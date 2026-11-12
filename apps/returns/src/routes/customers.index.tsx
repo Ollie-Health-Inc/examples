@@ -1,0 +1,81 @@
+import { useState } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+
+import { DateTime } from "#/components";
+import { customerName, useRequests } from "#/lib/desk";
+import { listCustomers } from "#/lib/loops";
+
+export const Route = createFileRoute("/customers/")({
+  loader: () => listCustomers({ data: {} }),
+  component: CustomersPage,
+});
+
+type Page = Awaited<ReturnType<typeof listCustomers>>;
+
+function CustomersPage() {
+  const firstPage = Route.useLoaderData();
+  const [morePages, setMorePages] = useState<Page[]>([]);
+  const requests = useRequests();
+
+  const pages = [firstPage, ...morePages];
+  // Drop repeats, in case new customers pushed someone from the first page onto a later one.
+  const users = pages
+    .flatMap((page) => page.users)
+    .filter((user, i, all) => all.findIndex((u) => u.id === user.id) === i);
+  const nextCursor = pages[pages.length - 1].nextCursor;
+
+  async function loadMore() {
+    if (!nextCursor) return;
+    const page = await listCustomers({ data: { cursor: nextCursor } });
+    setMorePages((loaded) => [...loaded, page]);
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-3xl space-y-10">
+      <section>
+        <h1 className="text-5xl font-semibold">Customers</h1>
+        <p className="mt-4 text-lg text-neutral-500">
+          Everyone in the organization, newest first. A customer appears once a
+          decision is recorded for them. Other loops can add people here too.
+        </p>
+      </section>
+
+      <section>
+        {users.length === 0 && (
+          <p className="card text-neutral-500">No customers yet.</p>
+        )}
+        <ul className="space-y-2">
+          {users.map((user) => {
+            const name = customerName(requests, user.id);
+            return (
+              <li key={user.id}>
+                <Link
+                  to="/customers/$customerId"
+                  params={{ customerId: user.id }}
+                  className="card flex items-center justify-between gap-3 p-4 hover:border-neutral-300"
+                >
+                  <span className="truncate">
+                    <span className="font-medium">{name ?? user.id}</span>{" "}
+                    {name && (
+                      <span className="text-sm text-neutral-500">
+                        {user.id}
+                      </span>
+                    )}
+                  </span>
+                  <span className="shrink-0 text-sm text-neutral-500">
+                    <DateTime value={user.createdAt} />
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        {nextCursor && (
+          <button onClick={loadMore} className="chip mt-4 w-full">
+            Load more
+          </button>
+        )}
+      </section>
+    </main>
+  );
+}
