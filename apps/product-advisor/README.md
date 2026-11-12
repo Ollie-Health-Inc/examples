@@ -2,6 +2,12 @@
 
 A small [TanStack Start](https://tanstack.com/start) app for testing the Loops **Product advisor agent**. The home page lists the organization's shoppers from Loops and lets you add new ones. Opening a shopper shows their saved quiz and lets you chat with the agent as them.
 
+![A shopper's page, with their saved quiz above the conversation](screenshots/chat.png)
+
+| Shoppers                                                                        | Starting a conversation                                            |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![The shopper list, with drafts marked "No quiz yet"](screenshots/shoppers.png) | ![An empty chat with suggested starters](screenshots/new-chat.png) |
+
 ## Run it
 
 1. Run Loops locally (the API listens on `http://localhost:8787`), sign in to the dashboard, and deploy the **Product advisor agent** template.

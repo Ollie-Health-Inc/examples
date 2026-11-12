@@ -1,159 +1,55 @@
-# Turborepo starter
+# Ollie examples
 
-This Turborepo starter is maintained by the Turborepo core team.
+Example apps built on Loops, Ollie's platform for agents and workflows. Each one shows how an app outside Loops can talk to a Loops template through its HTTP API, with the API token kept on the server.
 
-## Using this example
+## Apps
 
-Run the following command:
+| App                                     | What it shows                                                                                                       |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| [Product advisor](apps/product-advisor) | Chatting with the **Product advisor agent** as different shoppers, and reading back the quiz it saves on each user. |
 
-```sh
-npx create-turbo@latest
-```
+Each app has its own README with setup steps and a walkthrough of how it works.
 
-## What's inside?
+### Product advisor
 
-This Turborepo includes the following packages/apps:
+A [TanStack Start](https://tanstack.com/start) microsite. Create shoppers, chat with the agent as them, and see the recommendations it saves to Loops.
 
-### Apps and Packages
+[![The product advisor app](apps/product-advisor/screenshots/chat.png)](apps/product-advisor)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `@next/eslint-plugin-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Getting started
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+You need [Bun](https://bun.sh) 1.3 or later and Node.js 24 or later.
 
 ```sh
-cd my-turborepo
-turbo build
+bun install
 ```
 
-Without global `turbo`, use your package manager:
+Each app needs its own Loops settings. Copy the app's `.env.example` to `.env` and fill it in, as described in that app's README. Then run every app in development mode:
 
 ```sh
-cd my-turborepo
-npx turbo build
-bun exec turbo build
-bun exec turbo build
+bun run dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Or run one app on its own:
 
 ```sh
-turbo build --filter=docs
+bun run dev --filter=product-advisor
 ```
 
-Without global `turbo`:
+## Commands
 
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
-```
+Run these from the repository root. [Turborepo](https://turborepo.com) runs them in each app.
 
-### Develop
+| Command               | What it does                    |
+| --------------------- | ------------------------------- |
+| `bun run dev`         | Starts the apps' dev servers.   |
+| `bun run build`       | Builds the apps for production. |
+| `bun run check-types` | Type-checks the apps.           |
+| `bun run format`      | Formats the code with Prettier. |
 
-To develop all apps and packages, run the following command:
+## Adding an example
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+1. Create the app in `apps/<name>`. Bun picks it up as a workspace automatically.
+2. Give it `dev`, `build` and `check-types` scripts so the root commands cover it.
+3. Add a `.env.example` listing the settings it needs, and keep real values in `.env`, which is git-ignored.
+4. Write a README with setup steps, how it works, and a screenshot or two, then add it to the table above.
